@@ -26,8 +26,6 @@
       pre-commit-hooks,
     }:
     let
-      # system = "x86_64-linux";
-      # pkgs = nixpkgs.legacyPackages.${system};
       eachSystem =
         f:
         nixpkgs.lib.genAttrs (import systems) (
@@ -42,6 +40,14 @@
         system: with ags.packages.${system}; [
           hyprland
         ];
+
+      extraPackages =
+        system: pkgs:
+        with pkgs;
+        [
+          sysstat
+        ]
+        ++ ags-extensions system;
     in
     {
       packages = eachSystem (
@@ -52,10 +58,7 @@
             src = ./.;
             name = "my-shell";
             entry = "app.ts";
-            extraPackages = [
-              #       # ags.packages.${system}.battery
-              #       # pkgs.fzf
-            ] ++ ags-extensions system;
+            extraPackages = extraPackages system pkgs;
           };
         }
       );
@@ -69,7 +72,7 @@
               typescript-language-server
 
               (ags.packages.${system}.default.override {
-                extraPackages = [ ] ++ ags-extensions system;
+                extraPackages = extraPackages system pkgs;
               })
             ];
             shellHook = self.checks.${system}.pre-commit-check.shellHook;
