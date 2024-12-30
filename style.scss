@@ -22,4 +22,8 @@ window.Bar {
     background: #{$theme_fg_color};
     color: #{$theme_bg_color};
   }
+
+  .critical {
+    color: red;
+  }
 }

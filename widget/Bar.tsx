@@ -73,7 +73,10 @@ function Cpu(): JSX.Element {
     return (
       <>
         {loads.map((load) => (
-          <label className="hist-bars" label={loadToHistogramBar(load)} />
+          <label
+            className={load > 80 ? "critical" : ""}
+            label={loadToHistogramBar(load)}
+          />
         ))}
       </>
     );
