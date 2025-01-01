@@ -35,31 +35,12 @@
             pkgs = nixpkgs.legacyPackages.${system};
           }
         );
-
-      ags-extensions =
-        system: with ags.packages.${system}; [
-          hyprland
-        ];
-
-      extraPackages =
-        system: pkgs:
-        with pkgs;
-        [
-          sysstat
-        ]
-        ++ ags-extensions system;
     in
     {
       packages = eachSystem (
-        { system, pkgs }:
+        { pkgs, ... }:
         {
-          default = ags.lib.bundle {
-            inherit pkgs;
-            src = ./.;
-            name = "my-shell";
-            entry = "app.ts";
-            extraPackages = extraPackages system pkgs;
-          };
+          default = pkgs.callPackage ./nix/package.nix { inherit ags; };
         }
       );
 
@@ -68,12 +49,10 @@
         {
           default = pkgs.mkShell {
             buildInputs = with pkgs; [
+              self.packages.${system}.default.buildInputs
+              self.packages.${system}.default.nativeBuildInputs
               self.checks.${system}.pre-commit-check.enabledPackages
               typescript-language-server
-
-              (ags.packages.${system}.default.override {
-                extraPackages = extraPackages system pkgs;
-              })
             ];
             shellHook = self.checks.${system}.pre-commit-check.shellHook;
           };
