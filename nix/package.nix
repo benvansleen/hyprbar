@@ -1,5 +1,4 @@
 {
-  system,
   pkgs,
   ags,
   ...

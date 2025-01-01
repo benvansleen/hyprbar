@@ -1,9 +1,5 @@
 { self, ... }:
-{
-  pkgs,
-  lib,
-  ...
-}:
+{ pkgs, lib, ... }:
 
 {
   config = {
