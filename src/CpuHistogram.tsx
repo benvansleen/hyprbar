@@ -1,49 +1,49 @@
 import { Variable } from "astal";
+import { Index, Float } from "./types";
 
-interface ICpuLoad {
-  cpu: string;
-  usr: number;
-  nice: number;
-  sys: number;
-  iowait: number;
-  irq: number;
-  soft: number;
-  steal: number;
-  guest: number;
-  gnice: number;
-  idle: number;
-}
+type MpStat = {
+  sysstat?: {
+    hosts: [
+      {
+        nodename: string;
+        sysname: string;
+        release: string;
+        machine: string;
+        "number-of-cpus": string;
+        date: string;
+        statistics: [
+          {
+            timestamp: string;
+            "cpu-load": [
+              {
+                cpu: "all" | `${Index}`;
+                usr: Float;
+                nice: Float;
+                sys: Float;
+                iowait: Float;
+                irq: Float;
+                soft: Float;
+                steal: Float;
+                guest: Float;
+                gnice: Float;
+                idle: Float;
+              },
+            ];
+          },
+        ];
+      },
+    ];
+  };
+};
 
-interface IStatistic {
-  timestamp: string;
-  "cpu-load": [ICpuLoad];
-}
-
-interface IHost {
-  nodename: string;
-  sysname: string;
-  release: string;
-  machine: string;
-  "number-of-cpus": string;
-  date: string;
-  statistics: [IStatistic];
-}
-
-interface ISysstat {
-  hosts: [IHost];
-}
-
-interface IMPstat {
-  sysstat?: ISysstat;
-}
-
-const cpus: Variable<IMPstat> = Variable({}).poll(
+const cpus: Variable<MpStat> = Variable({}).poll(
   1100,
   "mpstat -P ALL -o JSON 1 1",
-  (out: string, _prev: IMPstat) => JSON.parse(out),
+  (out: string, _prev: MpStat) => JSON.parse(out),
 );
 
-function loadToHistogramBar(load: number) {
+type HistogramBar = "▁" | "▂" | "▃" | "▄" | "▅" | "▆" | "▇" | "█";
+function loadToHistogramBar(load: number): HistogramBar {
   return load < 10
     ? "▁"
     : load < 20
@@ -85,5 +85,5 @@ export default function CpuHistogram(): JSX.Element {
     );
   });
 
-  return <box>{widget()}</box>;
+  return <>{widget()}</>;
 }
