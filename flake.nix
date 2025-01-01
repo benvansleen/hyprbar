@@ -41,6 +41,26 @@
         { pkgs, ... }:
         {
           default = pkgs.callPackage ./nix/package.nix { inherit ags; };
+
+          watch =
+            with pkgs;
+            let
+              ags-bin = lib.getExe (ags.packages.${system}.default);
+            in
+            writeShellScriptBin "watch" ''
+              function toggle-ags() {
+                [ "$(${ags-bin} list)" ] && ${ags-bin} quit
+                ${ags-bin} run src/ &
+              }
+              toggle-ags
+              while true; do
+                ${inotify-tools}/bin/inotifywait \
+                  -e modify,create,delete,move \
+                  -r ./src \
+                  -r ./style.scss \
+                  && toggle-ags
+              done
+            '';
         }
       );
 
