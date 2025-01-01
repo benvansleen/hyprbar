@@ -8,7 +8,7 @@
 ags.lib.bundle {
   inherit pkgs;
   src = ../.;
-  name = "my-hyprbar";
+  name = "hyprbar";
   entry = "app.ts";
   extraPackages =
     with pkgs;
