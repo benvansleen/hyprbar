@@ -44,6 +44,11 @@
         }
       );
 
+      homeManagerModules = {
+        default = self.homeManagerModules.hyprbar;
+        hyprbar = import ./nix/home-manager.nix { inherit self; };
+      };
+
       devShells = eachSystem (
         { system, pkgs }:
         {
