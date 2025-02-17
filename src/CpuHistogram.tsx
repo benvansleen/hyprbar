@@ -74,14 +74,17 @@ export default function CpuHistogram(): JSX.Element {
       .map(({ usr }) => usr) ?? [0];
 
     return (
-      <>
-        {loads.map((load) => (
-          <label
-            className={load > 80 ? "critical" : ""}
-            label={loadToHistogramBar(load)}
-          />
-        ))}
-      </>
+      <button>
+        <box>
+          <label label="󰍛 " className="cpu-icon" />
+          {loads.map((load) => (
+            <label
+              className={load > 80 ? "critical" : ""}
+              label={loadToHistogramBar(load)}
+            />
+          ))}
+        </box>
+      </button>
     );
   });
 
