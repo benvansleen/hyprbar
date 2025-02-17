@@ -29,6 +29,7 @@ export default function Workspaces({
             ws.get_monitor().get_name() == monitor.get_name(),
         )
         .map((ws) => {
+          // "      "
           return (
             <button
               onClick={() => ws.focus()}
@@ -39,17 +40,14 @@ export default function Workspaces({
           );
         });
 
+      const showFocusedClient = monitor === focusedClient.get_monitor();
       return (
         <box>
           {workspace_buttons}
 
-          {focusedClient ? (
-            <button>
-              <label
-                label={monitorActiveWorkspace
-                  .get_last_client()
-                  .get_initial_class()}
-              />
+          {showFocusedClient ? (
+            <button className="focusedClient">
+              <label label={render_classname(focusedClient.get_class())} />
             </button>
           ) : (
             <box />
@@ -60,4 +58,16 @@ export default function Workspaces({
   );
 
   return <>{workspaces()}</>;
+}
+
+function render_classname(classname: string): string {
+  if (classname == "floorp" || classname == "firefox") {
+    return "Browser";
+  } else if (classname.endsWith("ghostty")) {
+    return "Ghostty";
+  } else if (classname == "emacs") {
+    return "Emacs";
+  } else {
+    return classname;
+  }
 }
