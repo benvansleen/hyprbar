@@ -2,6 +2,8 @@ import { App, Astal, Gtk, Gdk } from "astal/gtk3";
 import { Variable } from "astal";
 import Workspaces from "./Workspaces";
 import CpuHistogram from "./CpuHistogram";
+import CpuTemperature from "./CpuTemperature";
+import Ram from "./Ram";
 import { Index } from "./types";
 
 const time = Variable("").poll(1000, "date '+%-I:%M %p'");
@@ -13,32 +15,32 @@ type BarProps = {
 
 function Left({ monitor_idx }: BarProps) {
   return (
-    <box halign={Gtk.Align.START}>
+    <>
       <Workspaces monitor_idx={monitor_idx} />
-    </box>
+    </>
   );
 }
 
 function Center(_props: BarProps) {
-  return (
-    <box halign={Gtk.Align.CENTER}>
-      <CpuHistogram />
-    </box>
-  );
+  return <></>;
 }
 
 function Right(_props: BarProps) {
   return (
-    <box halign={Gtk.Align.END}>
+    <>
+      <CpuHistogram />
+      <CpuTemperature />
+      <Ram />
       <button onClick={() => print("hello")} halign={Gtk.Align.END}>
         <label label={time()} />
       </button>
-    </box>
+    </>
   );
 }
 
 export default function Bar(gdkmonitor: Gdk.Monitor, monitor_idx: Index) {
   const props = { gdkmonitor, monitor_idx };
+  const is_primary = monitor_idx === 0;
   return (
     <window
       className="Bar"
@@ -52,9 +54,27 @@ export default function Bar(gdkmonitor: Gdk.Monitor, monitor_idx: Index) {
       application={App}
     >
       <centerbox>
-        <Left {...props} />
-        <Center {...props} />
-        <Right {...props} />
+        {is_primary ? (
+          <>
+            <box halign={Gtk.Align.START}>
+              <Left {...props} />
+            </box>
+            <box halign={Gtk.Align.CENTER}>
+              <Center {...props} />
+            </box>
+            <box halign={Gtk.Align.END}>
+              <Right {...props} />
+            </box>
+          </>
+        ) : (
+          <>
+            <box halign={Gtk.Align.START}>
+              <Left {...props} />
+            </box>
+            <box halign={Gtk.Align.CENTER}></box>
+            <box halign={Gtk.Align.END}></box>
+          </>
+        )}
       </centerbox>
     </window>
   );
