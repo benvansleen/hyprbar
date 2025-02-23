@@ -13,6 +13,7 @@ const ramUsage: Variable<Rational> = Variable({
   return { numerator: used, denominator: total };
 });
 
+const CRITICAL_RAM = 0.8;
 export default function Ram(): JSX.Element {
   const widget = Variable.derive(
     [ramUsage],
@@ -22,7 +23,7 @@ export default function Ram(): JSX.Element {
         <button className="dial">
           <label
             label={`  ${(pct * 100).toFixed(0)}%`}
-            className="dial-label"
+            className={`dial-label ${pct > CRITICAL_RAM ? "critical" : ""}`}
           />
         </button>
       );

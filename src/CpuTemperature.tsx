@@ -8,11 +8,15 @@ const cpuTemp: Variable<number> = Variable(0).poll(
   },
 );
 
+const CRITICAL_TEMP = 89;
 export default function CpuTemperature(): JSX.Element {
   const widget = Variable.derive([cpuTemp], (cpuTemp) => {
     return (
       <button className="dial">
-        <label label={` ${cpuTemp.toFixed(0)}°C`} className="dial-label" />
+        <label
+          label={` ${cpuTemp.toFixed(0)}°C`}
+          className={`dial-label ${cpuTemp > CRITICAL_TEMP ? "critical" : ""}`}
+        />
       </button>
     );
   });

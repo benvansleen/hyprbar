@@ -37,7 +37,7 @@ type MpStat = {
 };
 
 const cpus: Variable<MpStat> = Variable({}).poll(
-  1100,
+  250,
   "mpstat -P ALL -o JSON 1 1",
   (out: string, _prev: MpStat) => JSON.parse(out),
 );
