@@ -40,7 +40,8 @@ export default function Workspaces({
           );
         });
 
-      const showFocusedClient = monitor === focusedClient.get_monitor();
+      const showFocusedClient =
+        focusedClient && monitor === focusedClient.get_monitor();
       return (
         <box>
           {workspace_buttons}
