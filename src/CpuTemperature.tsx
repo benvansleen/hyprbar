@@ -2,9 +2,9 @@ import { Variable } from "astal";
 
 const cpuTemp: Variable<number> = Variable(0).poll(
   1000,
-  ["cat", "/sys/class/hwmon/hwmon3/temp1_input"],
+  ["sensors", "-j"],
   (temp: string, _prev: number) => {
-    return Number(temp) / 1000;
+    return JSON.parse(temp)["k10temp-pci-00c3"]["Tctl"]["temp1_input"];
   },
 );
 

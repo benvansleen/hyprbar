@@ -13,6 +13,7 @@ ags.lib.bundle {
     with pkgs;
     [
       sysstat
+      lm_sensors
       (writeShellScriptBin "ram-usage" ''
         ${procps}/bin/free -m \
           | ${gnugrep}/bin/grep 'Mem' \
