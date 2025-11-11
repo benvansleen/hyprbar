@@ -8,6 +8,7 @@
 
 let
   inherit (lib) mkIf mkEnableOption;
+  inherit (pkgs.stdenv.hostPlatform) system;
   cfg = config.hyprbar;
 in
 {
@@ -24,7 +25,7 @@ in
         WantedBy = [ "default.target" ];
       };
       Service = {
-        ExecStart = lib.getExe self.packages.${pkgs.system}.default;
+        ExecStart = lib.getExe self.packages.${system}.default;
       };
     };
   };

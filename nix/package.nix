@@ -20,7 +20,7 @@ ags.lib.bundle {
           | ${gawk}/bin/awk '{print $2, $3}'
       '')
     ]
-    ++ (with ags.packages.${system}; [
+    ++ (with ags.packages.${pkgs.stdenv.hostPlatform.system}; [
       hyprland
     ]);
 }
