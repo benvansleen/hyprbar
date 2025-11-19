@@ -68,6 +68,8 @@ function render_classname(classname: string): string {
     return "󰊠  Ghostty";
   } else if (classname == "emacs") {
     return "  Emacs";
+  } else if (classname == "neovide") {
+    return "  Neovim";
   } else {
     return classname;
   }
