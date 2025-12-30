@@ -30,7 +30,7 @@ function Right(_props: BarProps) {
   return (
     <>
       <CpuHistogram />
-      {/* <CpuTemperature /> */}
+      <CpuTemperature />
       <Ram />
       <BatteryPct />
       <button onClick={() => print("hello")} halign={Gtk.Align.END}>
