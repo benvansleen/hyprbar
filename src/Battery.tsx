@@ -59,7 +59,7 @@ export default function BatteryPct(): JSX.Element {
         <button className="dial">
           <label
             label={`${batteryIcon(batteryCharging, batteryPct)} ${batteryPct}%`}
-            className={`dial-label ${batteryPct < CRITICAL_POWER ? "critical" : ""}`}
+            className={`dial-label ${!batteryCharging && batteryPct < CRITICAL_POWER ? "critical" : ""}`}
           />
         </button>
       );
