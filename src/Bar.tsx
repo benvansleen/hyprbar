@@ -1,6 +1,7 @@
 import { App, Astal, Gtk, Gdk } from "astal/gtk3";
 import { Variable } from "astal";
 import Workspaces from "./Workspaces";
+import BatteryPct from "./Battery";
 import CpuHistogram from "./CpuHistogram";
 import CpuTemperature from "./CpuTemperature";
 import Ram from "./Ram";
@@ -29,8 +30,9 @@ function Right(_props: BarProps) {
   return (
     <>
       <CpuHistogram />
-      <CpuTemperature />
+      {/* <CpuTemperature /> */}
       <Ram />
+      <BatteryPct />
       <button onClick={() => print("hello")} halign={Gtk.Align.END}>
         <label label={time()} />
       </button>
