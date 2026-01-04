@@ -4,20 +4,13 @@ $theme_bg_color: "@theme_bg_color";
 
 window.Bar {
   background: transparent;
-  // color: #{$theme_bg_color};
   font-size: 15px;
   font-weight: bold;
   opacity: 0.85;
 
   > centerbox {
-    // background: #{$theme_bg_color};
     margin: 0px 0px 8px 8px;
   }
-
-  // box {
-  //     background-color: #{$theme_bg_color};
-  //     color: #{$theme_fg_color};
-  // }
 
   menubutton,
   button {
@@ -34,16 +27,6 @@ window.Bar {
     margin: 2px 3px;
   }
 
-  .pill {
-    // min-width: 50px;
-    // radius: 0.5rem;
-    // active_width: 12em;
-    // font-size: 0.2em;
-    // min-width: 4em;
-    // min-height: 4em;
-    // border-radius: 1.9rem * 0.6;
-  }
-
   .focused {
     background: #{$theme_fg_color};
     color: #{$theme_bg_color};
@@ -53,35 +36,7 @@ window.Bar {
     color: red;
   }
 
-  // .dial {
-  //   color: green;
-  //   min-width: 50px;
-  //   // font-size: 12px;
-  //   // margin: 2px;
-  // }
-  .dial {
-    // margin: 0.3rem 0.8rem .3rem 0.8rem;
-    // font-family: Iosevka Aile;
-    // font-weight: bold
-  }
-
-  .dial-progress {
-    // background-color: black;
-  }
-
-  .dial-label {
-    // font-size: .8rem;
-    // color: #{$theme_fg_color};
-    // margin: 2rem;
-    // margin: 2rem 0.9rem 2rem 0.9rem
-    // margin: .8rem 1rem;
-  }
-
   .cpu-icon {
     font-size: 22px;
-  }
-
-  .focusedClient {
-    // opacity: 0.8;
   }
 }

@@ -1,33 +1,16 @@
 import { For } from "ags";
 import { createPoll } from "ags/time";
-import { Index, Float } from "./types";
 
 type MpStat = {
   sysstat?: {
     hosts: [
       {
-        nodename: string;
-        sysname: string;
-        release: string;
-        machine: string;
-        "number-of-cpus": string;
-        date: string;
         statistics: [
           {
-            timestamp: string;
             "cpu-load": [
               {
-                cpu: "all" | `${Index}`;
-                usr: Float;
-                nice: Float;
-                sys: Float;
-                iowait: Float;
-                irq: Float;
-                soft: Float;
-                steal: Float;
-                guest: Float;
-                gnice: Float;
-                idle: Float;
+                cpu: "all" | string;
+                usr: number;
               },
             ];
           },
@@ -56,6 +39,7 @@ const cpuLoads = createPoll(
 );
 
 type HistogramBar = "▁" | "▂" | "▃" | "▄" | "▅" | "▆" | "▇" | "█";
+
 function loadToHistogramBar(load: number): HistogramBar {
   if (load < 10) return "▁";
   if (load < 20) return "▂";

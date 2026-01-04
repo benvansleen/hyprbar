@@ -15,18 +15,17 @@ function Left({ connector }: { connector: string }): JSX.Element {
   return <Workspaces connector={connector} />;
 }
 
-function Right() {
-  // const time = createPoll("", 1000, ["date", "+%-I:%M %p"])
+function Right(): JSX.Element {
   const time = createPoll("", 1000, () => {
     return GLib.DateTime.new_now_local().format("%-I:%M %p")!;
   });
+
   return (
     <>
       <CpuHistogram />
       <CpuTemperature />
       <Ram />
       <BatteryPct />
-
       <menubutton>
         <label label={time} />
         <popover>
@@ -37,20 +36,18 @@ function Right() {
   );
 }
 
-// export default function Bar(gdkmonitor: Gdk.Monitor, monitor_idx: Index) {
-export default function Bar({ gdkmonitor }: { gdkmonitor: Gdk.Monitor }) {
+export default function Bar({
+  gdkmonitor,
+}: {
+  gdkmonitor: Gdk.Monitor;
+}): JSX.Element {
   let win: Astal.Window;
   const { BOTTOM, LEFT, RIGHT } = Astal.WindowAnchor;
 
-  // const props = { gdkmonitor, monitor_idx };
-  // const is_primary = monitor_idx === 0;
-
   onCleanup(() => {
-    // Root components (windows) are not automatically destroyed.
-    // When the monitor is disconnected from the system, this callback
-    // is run from the parent <For> which allows us to destroy the window
     win.destroy();
   });
+
   return (
     <window
       class="Bar"
@@ -71,78 +68,6 @@ export default function Bar({ gdkmonitor }: { gdkmonitor: Gdk.Monitor }) {
           <Right />
         </box>
       </centerbox>
-
-      {/* <centerbox> */}
-      {/*   <box halign={Gtk.Align.START}> */}
-      {/*     <Left /> */}
-      {/*   </box> */}
-      {/*   <box halign={Gtk.Align.CENTER}> */}
-      {/*     <Center /> */}
-      {/*   </box> */}
-      {/*   <box halign={Gtk.Align.END}> */}
-      {/*     <Right /> */}
-      {/*   </box> */}
-
-      {/* {is_primary ? ( */}
-      {/*   <> */}
-      {/*     <box halign={Gtk.Align.START}> */}
-      {/*       <Left {...props} /> */}
-      {/*     </box> */}
-      {/*     <box halign={Gtk.Align.CENTER}> */}
-      {/*       <Center {...props} /> */}
-      {/*     </box> */}
-      {/*     <box halign={Gtk.Align.END}> */}
-      {/*       <Right {...props} /> */}
-      {/*     </box> */}
-      {/*   </> */}
-      {/* ) : ( */}
-      {/*   <> */}
-      {/*     <box halign={Gtk.Align.START}> */}
-      {/*       <Left {...props} /> */}
-      {/*     </box> */}
-      {/*     <box halign={Gtk.Align.CENTER}></box> */}
-      {/*     <box halign={Gtk.Align.END}></box> */}
-      {/*   </> */}
-      {/* )} */}
-      {/* </centerbox> */}
     </window>
   );
 }
-
-// export default function Bar({ gdkmonitor }: { gdkmonitor: Gdk.Monitor }) {
-//   let win: Astal.Window
-//   const { TOP, LEFT, RIGHT } = Astal.WindowAnchor
-//
-//   onCleanup(() => {
-//     // Root components (windows) are not automatically destroyed.
-//     // When the monitor is disconnected from the system, this callback
-//     // is run from the parent <For> which allows us to destroy the window
-//     win.destroy()
-//   })
-//
-//   return (
-//     <window
-//       $={(self) => (win = self)}
-//       visible
-//       namespace="my-bar"
-//       name={`bar-${gdkmonitor.connector}`}
-//       gdkmonitor={gdkmonitor}
-//       exclusivity={Astal.Exclusivity.EXCLUSIVE}
-//       anchor={TOP | LEFT | RIGHT}
-//       application={app}
-//     >
-//       {/* <centerbox> */}
-//       {/*   <box $type="start"> */}
-//       {/*     <Clock /> */}
-//       {/*     <Mpris /> */}
-//       {/*   </box> */}
-//       {/*   <box $type="end"> */}
-//       {/*     <Tray /> */}
-//       {/*     <Wireless /> */}
-//       {/*     <AudioOutput /> */}
-//       {/*     <Battery /> */}
-//       {/*   </box> */}
-//       {/* </centerbox> */}
-//     </window>
-//   )
-// }
