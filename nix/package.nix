@@ -4,38 +4,11 @@
   ...
 }:
 
-# ags.lib.bundle {
-#   inherit pkgs;
-#   src = ../.;
-#   name = "hyprbar";
-#   entry = "./src";
-#   extraPackages =
-#     with pkgs;
-#     [
-#       sysstat
-#       lm_sensors
-#       (writeShellScriptBin "ram-usage" ''
-#         ${procps}/bin/free -m \
-#           | ${gnugrep}/bin/grep 'Mem' \
-#           | ${gawk}/bin/awk '{print $2, $3}'
-#       '')
-#     ]
-#     ++ (with ags.packages.${pkgs.stdenv.hostPlatform.system}; [
-#       hyprland
-#     ]);
-# }
-
 let
   astalPackages = with ags.packages.${pkgs.stdenv.hostPlatform.system}; [
-    io
+    default
     astal4
-    apps
-    battery
-    mpris
-    network
-    powerprofiles
-    tray
-    wireplumber
+    hyprland
   ];
 
   runtimeDeps = with pkgs; [
@@ -60,8 +33,6 @@ pkgs.stdenv.mkDerivation rec {
     wrapGAppsHook3
     gobject-introspection
     makeWrapper
-    ags.packages.${stdenv.hostPlatform.system}.default
-    ags.packages.${stdenv.hostPlatform.system}.hyprland
   ];
 
   buildInputs = extraPackages ++ [ pkgs.gjs ];

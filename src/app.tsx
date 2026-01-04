@@ -2,12 +2,6 @@ import { createBinding, createComputed, For, This } from "ags";
 import app from "ags/gtk4/app";
 import style from "../style.scss";
 import Bar from "./Bar";
-import Gdk from "gi://Gdk?version=4.0";
-
-type MonitorWithPrimaryAnnotation = {
-  monitor: Gdk.Monitor;
-  primary: boolean;
-};
 
 app.start({
   css: style,
