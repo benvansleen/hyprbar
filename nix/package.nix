@@ -23,7 +23,6 @@ let
     ++ runtimeDeps
     ++ (with pkgs; [
       libadwaita
-      libsoup_3
     ]);
 in
 pkgs.stdenv.mkDerivation rec {
