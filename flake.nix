@@ -1,6 +1,6 @@
 {
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     systems.url = "github:nix-systems/default";
 
     ags = {
@@ -11,7 +11,6 @@
     pre-commit-hooks = {
       url = "github:cachix/git-hooks.nix";
       inputs.nixpkgs.follows = "nixpkgs";
-      inputs.nixpkgs-stable.follows = "nixpkgs";
     };
   };
 
@@ -36,7 +35,7 @@
     in
     {
       packages = eachSystem (
-        { pkgs, ... }:
+        { pkgs, system }:
         {
           default = pkgs.callPackage ./nix/package.nix { inherit ags; };
 
@@ -76,6 +75,7 @@
               self.packages.${system}.default.nativeBuildInputs
               self.checks.${system}.pre-commit-check.enabledPackages
               typescript-language-server
+              oxlint
             ];
             shellHook = self.checks.${system}.pre-commit-check.shellHook;
           };

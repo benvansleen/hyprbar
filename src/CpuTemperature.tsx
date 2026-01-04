@@ -1,25 +1,29 @@
-import { Variable } from "astal";
+import { createPoll } from "ags/time";
 
-const cpuTemp: Variable<number> = Variable(0).poll(
-  1000,
-  ["sensors", "-j"],
-  (temp: string, _prev: number) => {
-    return JSON.parse(temp)["k10temp-pci-00c3"]["Tctl"]["temp1_input"];
-  },
-);
+const cpuTemp = createPoll(0, 1000, ["sensors", "-j"], (jsonString: string) => {
+  try {
+    const data = JSON.parse(jsonString);
 
-const CRITICAL_TEMP = 89;
+    const amdTemp = data["k10temp-pci-00c3"]?.["Tctl"]?.["temp1_input"];
+    const intelTemp =
+      data["coretemp-isa-0000"]?.["Package id 0"]?.["temp1_input"];
+
+    return amdTemp || intelTemp || 0;
+  } catch {
+    return 0;
+  }
+});
+
 export default function CpuTemperature(): JSX.Element {
-  const widget = Variable.derive([cpuTemp], (cpuTemp) => {
-    return (
-      <button className="dial">
-        <label
-          label={` ${cpuTemp.toFixed(0)}°C`}
-          className={`dial-label ${cpuTemp > CRITICAL_TEMP ? "critical" : ""}`}
-        />
-      </button>
-    );
-  });
+  const visible = cpuTemp((temp) => temp !== 0);
+  const label = cpuTemp((temp) => ` ${temp.toFixed(0)}°C`);
+  const cssClass = cpuTemp(
+    (temp) => `dial-label ${temp > 89 ? "critical" : ""}`,
+  );
 
-  return <>{widget()}</>;
+  return (
+    <menubutton class="dial" visible={visible}>
+      <label label={label} class={cssClass} />
+    </menubutton>
+  );
 }

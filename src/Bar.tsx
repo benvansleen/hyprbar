@@ -1,79 +1,77 @@
-import { App, Astal, Gtk, Gdk } from "astal/gtk3";
-import { Variable } from "astal";
+import { onCleanup } from "ags";
+import app from "ags/gtk4/app";
+import Astal from "gi://Astal?version=4.0";
+import Gtk from "gi://Gtk?version=4.0";
+import Gdk from "gi://Gdk?version=4.0";
+import GLib from "gi://GLib";
+import { createPoll } from "ags/time";
 import Workspaces from "./Workspaces";
+import BatteryPct from "./Battery";
 import CpuHistogram from "./CpuHistogram";
 import CpuTemperature from "./CpuTemperature";
 import Ram from "./Ram";
-import { Index } from "./types";
 
-const time = Variable("").poll(1000, "date '+%-I:%M %p'");
-
-type BarProps = {
-  gdkmonitor: Gdk.Monitor;
-  monitor_idx: Index;
-};
-
-function Left({ monitor_idx }: BarProps) {
-  return (
-    <>
-      <Workspaces monitor_idx={monitor_idx} />
-    </>
-  );
+function Left({ connector }: { connector: string }): JSX.Element {
+  return <Workspaces connector={connector} />;
 }
 
-function Center(_props: BarProps) {
-  return <></>;
-}
+function Right(): JSX.Element {
+  const time = createPoll("", 1000, () => {
+    return GLib.DateTime.new_now_local().format("%-I:%M %p")!;
+  });
 
-function Right(_props: BarProps) {
   return (
     <>
       <CpuHistogram />
       <CpuTemperature />
       <Ram />
-      <button onClick={() => print("hello")} halign={Gtk.Align.END}>
-        <label label={time()} />
-      </button>
+      <BatteryPct />
+      <menubutton>
+        <label label={time} />
+        <popover>
+          <Gtk.Calendar />
+        </popover>
+      </menubutton>
     </>
   );
 }
 
-export default function Bar(gdkmonitor: Gdk.Monitor, monitor_idx: Index) {
-  const props = { gdkmonitor, monitor_idx };
-  const is_primary = monitor_idx === 0;
+export default function Bar({
+  gdkmonitor,
+  primary,
+}: {
+  gdkmonitor: Gdk.Monitor;
+  primary: boolean;
+}): JSX.Element {
+  let win: Astal.Window;
+  const { BOTTOM, LEFT, RIGHT } = Astal.WindowAnchor;
+
+  onCleanup(() => {
+    win.destroy();
+  });
+
   return (
     <window
-      className="Bar"
+      class="Bar"
+      $={(self) => (win = self)}
+      visible
+      namespace="hyprbar"
+      name={`bar-${gdkmonitor.connector}`}
       gdkmonitor={gdkmonitor}
       exclusivity={Astal.Exclusivity.EXCLUSIVE}
-      anchor={
-        Astal.WindowAnchor.BOTTOM |
-        Astal.WindowAnchor.LEFT |
-        Astal.WindowAnchor.RIGHT
-      }
-      application={App}
+      anchor={BOTTOM | LEFT | RIGHT}
+      application={app}
     >
       <centerbox>
-        {is_primary ? (
-          <>
-            <box halign={Gtk.Align.START}>
-              <Left {...props} />
-            </box>
-            <box halign={Gtk.Align.CENTER}>
-              <Center {...props} />
-            </box>
-            <box halign={Gtk.Align.END}>
-              <Right {...props} />
-            </box>
-          </>
+        <box $type="start">
+          <Left connector={gdkmonitor.connector} />
+        </box>
+        {primary ? (
+          <box $type="end">
+            <Right />
+          </box>
         ) : (
-          <>
-            <box halign={Gtk.Align.START}>
-              <Left {...props} />
-            </box>
-            <box halign={Gtk.Align.CENTER}></box>
-            <box halign={Gtk.Align.END}></box>
-          </>
+          <></>
         )}
       </centerbox>
     </window>
