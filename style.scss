@@ -5,7 +5,7 @@ $theme_bg_color: "@theme_bg_color";
 window.Bar {
   background: transparent;
   // color: #{$theme_bg_color};
-  font-size: 14px;
+  font-size: 15px;
   font-weight: bold;
   opacity: 0.85;
 
@@ -19,7 +19,9 @@ window.Bar {
   //     color: #{$theme_fg_color};
   // }
 
-  button {
+  menubutton {
+    background-color: #{$theme_bg_color};
+    color: #{$theme_fg_color};
     border-radius: 8px;
     margin: 2px;
   }
