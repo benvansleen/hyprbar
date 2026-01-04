@@ -4,13 +4,12 @@ $theme_bg_color: "@theme_bg_color";
 
 window.Bar {
   background: transparent;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: bold;
   opacity: 0.85;
-
-  > centerbox {
-    margin: 0px 0px 8px 8px;
-  }
+  margin-left: 7px;
+  margin-right: 7px;
+  margin-bottom: 5px;
 
   menubutton,
   button {
@@ -24,7 +23,6 @@ window.Bar {
     min-width: 44px;
     min-height: 14px;
     padding: 0;
-    margin: 2px 3px;
   }
 
   .focused {
