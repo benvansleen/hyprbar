@@ -60,8 +60,8 @@ pkgs.stdenv.mkDerivation rec {
     wrapGAppsHook3
     gobject-introspection
     makeWrapper
-    ags.packages.${system}.default
-    ags.packages.${system}.hyprland
+    ags.packages.${stdenv.hostPlatform.system}.default
+    ags.packages.${stdenv.hostPlatform.system}.hyprland
   ];
 
   buildInputs = extraPackages ++ [ pkgs.gjs ];
