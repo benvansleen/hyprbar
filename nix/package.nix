@@ -8,6 +8,7 @@ let
   astalPackages = with ags.packages.${pkgs.stdenv.hostPlatform.system}; [
     default
     astal4
+    battery
     hyprland
   ];
 
