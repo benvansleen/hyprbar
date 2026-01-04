@@ -57,7 +57,7 @@ function CpuBar({ index }: { index: number }): JSX.Element {
     (loads[index] ?? 0) > 80 ? "critical" : "",
   );
 
-  return <label label={label} class={cssClass} />;
+  return <label label={label} class={cssClass((c) => `cpu-bar ${c}`)} />;
 }
 
 export default function CpuHistogram(): JSX.Element {
