@@ -81,4 +81,6 @@ pkgs.stdenv.mkDerivation rec {
     wrapProgram $out/bin/${name} \
       --prefix PATH : ${pkgs.lib.makeBinPath runtimeDeps}
   '';
+
+  meta.mainProgram = name;
 }
