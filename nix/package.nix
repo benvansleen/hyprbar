@@ -28,7 +28,7 @@
 let
   astalPackages = with ags.packages.${pkgs.stdenv.hostPlatform.system}; [
     io
-    astal4 # or astal3 for gtk3
+    astal4
     apps
     battery
     mpris
@@ -36,22 +36,20 @@ let
     powerprofiles
     tray
     wireplumber
-    # notifd tray wireplumber
+  ];
+
+  runtimeDeps = with pkgs; [
+    sysstat
+    lm_sensors
+    coreutils
   ];
 
   extraPackages =
     astalPackages
+    ++ runtimeDeps
     ++ (with pkgs; [
       libadwaita
       libsoup_3
-
-      sysstat
-      lm_sensors
-      (writeShellScriptBin "ram-usage" ''
-        ${procps}/bin/free -m \
-          | ${gnugrep}/bin/grep 'Mem' \
-          | ${gawk}/bin/awk '{print $2, $3}'
-      '')
     ]);
 in
 pkgs.stdenv.mkDerivation rec {
@@ -61,6 +59,7 @@ pkgs.stdenv.mkDerivation rec {
   nativeBuildInputs = with pkgs; [
     wrapGAppsHook3
     gobject-introspection
+    makeWrapper
     ags.packages.${system}.default
     ags.packages.${system}.hyprland
   ];
@@ -76,5 +75,10 @@ pkgs.stdenv.mkDerivation rec {
     ags bundle src $out/bin/${name} -d "SRC='$out/share'"
 
     runHook postInstall
+  '';
+
+  postFixup = ''
+    wrapProgram $out/bin/${name} \
+      --prefix PATH : ${pkgs.lib.makeBinPath runtimeDeps}
   '';
 }
