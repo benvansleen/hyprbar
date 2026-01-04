@@ -75,6 +75,7 @@
               self.packages.${system}.default.nativeBuildInputs
               self.checks.${system}.pre-commit-check.enabledPackages
               typescript-language-server
+              oxlint
             ];
             shellHook = self.checks.${system}.pre-commit-check.shellHook;
           };
