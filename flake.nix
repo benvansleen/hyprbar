@@ -35,7 +35,7 @@
     in
     {
       packages = eachSystem (
-        { pkgs, ... }:
+        { pkgs, system }:
         {
           default = pkgs.callPackage ./nix/package.nix { inherit ags; };
 
