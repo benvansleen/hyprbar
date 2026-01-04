@@ -1,34 +1,36 @@
-import { Variable } from "astal";
+import { createPoll } from "ags/time";
 
 type Rational = { denominator: number; numerator: number };
-const ramUsage: Variable<Rational> = Variable({
-  numerator: 0,
-  denominator: 1,
-}).poll(1000, ["cat", "/proc/meminfo"], (meminfo: string, _prev: Rational) => {
-  var [_1, total] = meminfo.match(/MemTotal:\s+(\d+)\s+kB/) ?? [0, 0];
-  const [_2, available] = meminfo.match(/MemAvailable:\s+(\d+)\s+kB/) ?? [0, 0];
 
-  total = Number(total);
-  const used = total - Number(available);
-  return { numerator: used, denominator: total };
-});
+const ramUsage = createPoll(
+  { numerator: 0, denominator: 1 } as Rational,
+  1000,
+  ["cat", "/proc/meminfo"],
+  (meminfo: string) => {
+    const [, total] = meminfo.match(/MemTotal:\s+(\d+)\s+kB/) ?? [0, 0];
+    const [, available] = meminfo.match(/MemAvailable:\s+(\d+)\s+kB/) ?? [0, 0];
+
+    const totalNum = Number(total);
+    const used = totalNum - Number(available);
+    return { numerator: used, denominator: totalNum };
+  },
+);
 
 const CRITICAL_RAM = 0.8;
-export default function Ram(): JSX.Element {
-  const widget = Variable.derive(
-    [ramUsage],
-    ({ denominator: total, numerator: used }) => {
-      const pct = used / total;
-      return (
-        <button className="dial">
-          <label
-            label={`  ${(pct * 100).toFixed(0)}%`}
-            className={`dial-label ${pct > CRITICAL_RAM ? "critical" : ""}`}
-          />
-        </button>
-      );
-    },
-  );
 
-  return <>{widget()}</>;
+export default function Ram(): JSX.Element {
+  const label = ramUsage(({ numerator, denominator }) => {
+    const pct = numerator / denominator;
+    return `  ${(pct * 100).toFixed(0)}%`;
+  });
+  const cssClass = ramUsage(({ numerator, denominator }) => {
+    const pct = numerator / denominator;
+    return `dial-label ${pct > CRITICAL_RAM ? "critical" : ""}`;
+  });
+
+  return (
+    <menubutton class="dial">
+      <label label={label} class={cssClass} />
+    </menubutton>
+  );
 }

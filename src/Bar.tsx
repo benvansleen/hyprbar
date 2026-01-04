@@ -1,24 +1,18 @@
-// import { App, Astal, Gtk, Gdk } from "astal/gtk4";
-import { For, With, createBinding, onCleanup } from "ags";
+import { onCleanup } from "ags";
 import app from "ags/gtk4/app";
 import Astal from "gi://Astal?version=4.0";
 import Gtk from "gi://Gtk?version=4.0";
 import Gdk from "gi://Gdk?version=4.0";
 import GLib from "gi://GLib";
 import { createPoll } from "ags/time";
-// import { App, Astal, Gtk, Gdk } from "astal/gtk3";
-// import { Variable } from "astal";
-// import Workspaces from "./Workspaces";
+import Workspaces from "./Workspaces";
 import BatteryPct from "./Battery";
-// import CpuHistogram from "./CpuHistogram";
-// import CpuTemperature from "./CpuTemperature";
-// import Ram from "./Ram";
-import { Index } from "./types";
+import CpuHistogram from "./CpuHistogram";
+import CpuTemperature from "./CpuTemperature";
+import Ram from "./Ram";
 
-// const time = Variable("").poll(1000, "date '+%-I:%M %p'");
-
-function Left() {
-  return <>{/* <Workspaces monitor_idx={monitor_idx} /> */}</>;
+function Left({ connector }: { connector: string }): JSX.Element {
+  return <Workspaces connector={connector} />;
 }
 
 function Right() {
@@ -28,9 +22,9 @@ function Right() {
   });
   return (
     <>
-      {/* <CpuHistogram /> */}
-      {/* <CpuTemperature /> */}
-      {/* <Ram /> */}
+      <CpuHistogram />
+      <CpuTemperature />
+      <Ram />
       <BatteryPct />
 
       <menubutton>
@@ -39,9 +33,6 @@ function Right() {
           <Gtk.Calendar />
         </popover>
       </menubutton>
-      {/* <button halign={Gtk.Align.END}> */}
-      {/*   <label label={time()} /> */}
-      {/* </button> */}
     </>
   );
 }
@@ -73,7 +64,9 @@ export default function Bar({ gdkmonitor }: { gdkmonitor: Gdk.Monitor }) {
       application={app}
     >
       <centerbox>
-        <box $type="start"></box>
+        <box $type="start">
+          <Left connector={gdkmonitor.connector} />
+        </box>
         <box $type="end">
           <Right />
         </box>

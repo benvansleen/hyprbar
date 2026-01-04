@@ -39,10 +39,20 @@ let
     # notifd tray wireplumber
   ];
 
-  extraPackages = astalPackages ++ [
-    pkgs.libadwaita
-    pkgs.libsoup_3
-  ];
+  extraPackages =
+    astalPackages
+    ++ (with pkgs; [
+      libadwaita
+      libsoup_3
+
+      sysstat
+      lm_sensors
+      (writeShellScriptBin "ram-usage" ''
+        ${procps}/bin/free -m \
+          | ${gnugrep}/bin/grep 'Mem' \
+          | ${gawk}/bin/awk '{print $2, $3}'
+      '')
+    ]);
 in
 pkgs.stdenv.mkDerivation rec {
   name = "hyprbar";
@@ -52,6 +62,7 @@ pkgs.stdenv.mkDerivation rec {
     wrapGAppsHook3
     gobject-introspection
     ags.packages.${system}.default
+    ags.packages.${system}.hyprland
   ];
 
   buildInputs = extraPackages ++ [ pkgs.gjs ];
