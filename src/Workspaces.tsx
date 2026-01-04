@@ -13,6 +13,7 @@ export default function Workspaces({
   const workspaces = createBinding(hyprland, "workspaces");
   const focusedWorkspace = createBinding(hyprland, "focusedWorkspace");
   const focusedClient = createBinding(hyprland, "focusedClient");
+  const clients = createBinding(hyprland, "clients");
   const monitors = createBinding(hyprland, "monitors");
 
   const monitor = createComputed((get) => {
@@ -36,17 +37,18 @@ export default function Workspaces({
   });
 
   const activeWorkspaceId = createComputed((get) => {
-    // Subscribe to focusedWorkspace to react to workspace changes
     get(focusedWorkspace);
     const mon = get(monitor);
     return mon?.get_active_workspace()?.id ?? -1;
   });
 
   const focusedClientOnMonitor = createComputed((get) => {
+    // subscribe to all relevant signals that might indicate client focus change
+    get(clients);
     const client = get(focusedClient);
     const mon = get(monitor);
     if (!client || !mon) return null;
-    return client.get_monitor() === mon ? client : null;
+    return client.get_monitor()?.get_name() === mon.get_name() ? client : null;
   });
 
   return (
