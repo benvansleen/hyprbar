@@ -38,8 +38,10 @@ function Right(): JSX.Element {
 
 export default function Bar({
   gdkmonitor,
+  primary,
 }: {
   gdkmonitor: Gdk.Monitor;
+  primary: boolean;
 }): JSX.Element {
   let win: Astal.Window;
   const { BOTTOM, LEFT, RIGHT } = Astal.WindowAnchor;
@@ -64,9 +66,13 @@ export default function Bar({
         <box $type="start">
           <Left connector={gdkmonitor.connector} />
         </box>
-        <box $type="end">
-          <Right />
-        </box>
+        {primary ? (
+          <box $type="end">
+            <Right />
+          </box>
+        ) : (
+          <></>
+        )}
       </centerbox>
     </window>
   );
