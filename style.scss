@@ -69,4 +69,21 @@ window.Bar {
       opacity: 0.7;
     }
   }
+
+  .brightness {
+    background-color: #{$theme_bg_color};
+    border-radius: 8px;
+    margin: 2px;
+    opacity: 0.9;
+    padding: 0 8px;
+
+    .brightness-label {
+      padding: 0;
+    }
+
+    .brightness-slider {
+      min-width: 100px;
+      margin-right: 4px;
+    }
+  }
 }

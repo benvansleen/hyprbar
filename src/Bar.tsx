@@ -11,6 +11,7 @@ import CpuHistogram from "./CpuHistogram";
 import CpuTemperature from "./CpuTemperature";
 import Ram from "./Ram";
 import Volume from "./Volume";
+import Brightness from "./Brightness";
 
 function Left({ connector }: { connector: string }): JSX.Element {
   return <Workspaces connector={connector} />;
@@ -27,6 +28,7 @@ function Right(): JSX.Element {
       <CpuTemperature />
       <Ram />
       <Volume />
+      <Brightness />
       <BatteryPct />
       <menubutton>
         <label label={time} />

@@ -17,6 +17,7 @@ let
     sysstat
     lm_sensors
     coreutils
+    brightnessctl
   ];
 
   extraPackages =
