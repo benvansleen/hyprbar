@@ -10,6 +10,7 @@ import BatteryPct from "./Battery";
 import CpuHistogram from "./CpuHistogram";
 import CpuTemperature from "./CpuTemperature";
 import Ram from "./Ram";
+import Volume from "./Volume";
 
 function Left({ connector }: { connector: string }): JSX.Element {
   return <Workspaces connector={connector} />;
@@ -25,6 +26,7 @@ function Right(): JSX.Element {
       <CpuHistogram />
       <CpuTemperature />
       <Ram />
+      <Volume />
       <BatteryPct />
       <menubutton>
         <label label={time} />

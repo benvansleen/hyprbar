@@ -10,6 +10,7 @@ let
     astal4
     battery
     hyprland
+    wireplumber
   ];
 
   runtimeDeps = with pkgs; [
