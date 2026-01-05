@@ -14,7 +14,9 @@ window.Bar {
   margin-bottom: 5px;
 
   menubutton,
-  button {
+  button,
+  .brightness-label,
+  .cava {
     background-color: #{$theme_bg_color};
     color: #{$theme_fg_color};
     border-radius: 8px;
@@ -84,6 +86,14 @@ window.Bar {
     .brightness-slider {
       min-width: 100px;
       margin-right: 4px;
+    }
+  }
+
+  .cava {
+    padding: 0 16px;
+
+    label {
+      letter-spacing: -0.5px;
     }
   }
 }

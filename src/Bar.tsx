@@ -12,6 +12,7 @@ import CpuTemperature from "./CpuTemperature";
 import Ram from "./Ram";
 import Volume from "./Volume";
 import Brightness from "./Brightness";
+import CavaVisualizer from "./Cava";
 
 function Left({ connector }: { connector: string }): JSX.Element {
   return <Workspaces connector={connector} />;
@@ -71,9 +72,14 @@ export default function Bar({
           <Left connector={gdkmonitor.connector} />
         </box>
         {primary ? (
-          <box $type="end">
-            <Right />
-          </box>
+          <>
+            <box $type="center">
+              <CavaVisualizer />
+            </box>
+            <box $type="end">
+              <Right />
+            </box>
+          </>
         ) : (
           <></>
         )}

@@ -96,9 +96,9 @@ export default function Brightness(): JSX.Element {
           onChangeValue={(self) => onBrightnessChange(self)}
         />
       </revealer>
-      <button class="brightness-label">
+      <box class="brightness-label">
         <label label={label} width_chars={7} />
-      </button>
+      </box>
     </box>
   );
 }

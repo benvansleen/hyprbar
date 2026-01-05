@@ -9,6 +9,7 @@ let
     default
     astal4
     battery
+    cava
     hyprland
     wireplumber
   ];
