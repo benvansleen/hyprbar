@@ -15,6 +15,7 @@ window.Bar {
 
   menubutton,
   button,
+  .datetime,
   .brightness-label,
   .cava {
     background-color: #{$theme_bg_color};
@@ -22,6 +23,16 @@ window.Bar {
     border-radius: 8px;
     margin: 2px;
     opacity: 0.9;
+  }
+
+  .datetime {
+    .datetime-date {
+      padding-left: 12px;
+    }
+
+    .datetime-time {
+      text-shadow: 0 0 1px;
+    }
   }
 
   .workspace-button {

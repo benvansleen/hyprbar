@@ -1,10 +1,7 @@
 import { onCleanup } from "ags";
 import app from "ags/gtk4/app";
 import Astal from "gi://Astal?version=4.0";
-import Gtk from "gi://Gtk?version=4.0";
 import Gdk from "gi://Gdk?version=4.0";
-import GLib from "gi://GLib";
-import { createPoll } from "ags/time";
 import Workspaces from "./Workspaces";
 import BatteryPct from "./Battery";
 import CpuHistogram from "./CpuHistogram";
@@ -13,16 +10,13 @@ import Ram from "./Ram";
 import Volume from "./Volume";
 import Brightness from "./Brightness";
 import CavaVisualizer from "./Cava";
+import DateTime from "./DateTime";
 
 function Left({ connector }: { connector: string }): JSX.Element {
   return <Workspaces connector={connector} />;
 }
 
 function Right(): JSX.Element {
-  const time = createPoll("", 1000, () => {
-    return GLib.DateTime.new_now_local().format("%-I:%M %p")!;
-  });
-
   return (
     <>
       <CpuHistogram />
@@ -31,12 +25,7 @@ function Right(): JSX.Element {
       <Volume />
       <Brightness />
       <BatteryPct />
-      <menubutton>
-        <label label={time} />
-        <popover>
-          <Gtk.Calendar />
-        </popover>
-      </menubutton>
+      <DateTime />
     </>
   );
 }
