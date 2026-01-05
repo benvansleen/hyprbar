@@ -1,4 +1,4 @@
-import { createBinding, createComputed, createState } from "ags";
+import { createBinding, createComputed, createState, For } from "ags";
 import Wp from "gi://AstalWp";
 import Gtk from "gi://Gtk?version=4.0";
 
@@ -12,14 +12,16 @@ function volumeIcon(volume: number, muted: boolean): string {
 
 export default function Volume(): JSX.Element {
   const wp = Wp.get_default();
-  const speaker = wp?.audio.defaultSpeaker;
+  const audio = wp?.audio;
+  const speaker = audio?.defaultSpeaker;
 
-  if (!speaker) {
+  if (!audio || !speaker) {
     return <box />;
   }
 
   const volume = createBinding(speaker, "volume");
   const muted = createBinding(speaker, "mute");
+  const speakers = createBinding(audio, "speakers");
 
   const [expanded, setExpanded] = createState(false);
 
@@ -46,15 +48,24 @@ export default function Volume(): JSX.Element {
     speaker.volume = scale.get_value();
   };
 
+  let popoverRef: Gtk.Popover;
+
   return (
     <box
       class={cssClass}
       hexpand={false}
       $={(self) => {
+        // Hover to expand slider
         const motionCtrl = new Gtk.EventControllerMotion();
         motionCtrl.connect("enter", () => setExpanded(true));
         motionCtrl.connect("leave", () => setExpanded(false));
         self.add_controller(motionCtrl);
+
+        // Right-click to open device selector
+        const rightClick = new Gtk.GestureClick();
+        rightClick.set_button(3);
+        rightClick.connect("released", () => popoverRef?.popup());
+        self.add_controller(rightClick);
       }}
     >
       <revealer
@@ -80,6 +91,33 @@ export default function Volume(): JSX.Element {
       <button class="volume-button" onClicked={toggleMute}>
         <label label={label} width_chars={7} />
       </button>
+      <popover $={(self) => (popoverRef = self)}>
+        <box orientation={Gtk.Orientation.VERTICAL} class="device-selector">
+          <For each={speakers}>
+            {(endpoint: Wp.Endpoint) => {
+              const isDefault = createBinding(endpoint, "isDefault");
+              const deviceLabel = isDefault((def) =>
+                def ? `󰄴 ${endpoint.description}` : `  ${endpoint.description}`,
+              );
+              const deviceClass = isDefault((def) =>
+                def ? "device-item default" : "device-item",
+              );
+
+              return (
+                <button
+                  class={deviceClass}
+                  onClicked={() => {
+                    endpoint.isDefault = true;
+                    popoverRef?.popdown();
+                  }}
+                >
+                  <label label={deviceLabel} xalign={0} />
+                </button>
+              );
+            }}
+          </For>
+        </box>
+      </popover>
     </box>
   );
 }
