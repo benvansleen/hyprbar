@@ -21,7 +21,7 @@ const CRITICAL_RAM = 0.8;
 export default function Ram(): JSX.Element {
   const label = ramUsage(({ numerator, denominator }) => {
     const pct = numerator / denominator;
-    return `  ${(pct * 100).toFixed(0)}%`;
+    return ` ${(pct * 100).toFixed(0)}%`;
   });
   const cssClass = ramUsage(({ numerator, denominator }) => {
     const pct = numerator / denominator;

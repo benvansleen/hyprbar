@@ -4,7 +4,8 @@ $theme_bg_color: "@theme_bg_color";
 
 window.Bar {
   background: transparent;
-  font-size: 14px;
+  font-family: "VictorMono NFP";
+  font-size: 13px;
   font-weight: bold;
   opacity: 0.85;
   min-height: 40px;
@@ -36,10 +37,36 @@ window.Bar {
   }
 
   .cpu-icon {
-    font-size: 22px;
+    font-size: 20px;
   }
 
   .cpu-bar {
     margin: 0 -1px;
+  }
+
+  .volume {
+    background-color: #{$theme_bg_color};
+    border-radius: 8px;
+    margin: 2px;
+    opacity: 0.9;
+    padding: 0 8px;
+
+    .volume-button {
+      background: transparent;
+      border-radius: 4px;
+      margin: 0;
+      padding: 0;
+      min-height: 0;
+      min-width: 0;
+    }
+
+    .volume-slider {
+      min-width: 100px;
+      margin-right: 4px;
+    }
+
+    &.muted {
+      opacity: 0.7;
+    }
   }
 }

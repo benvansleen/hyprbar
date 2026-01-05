@@ -102,9 +102,9 @@ function FocusedClient({
 
 function renderClassname(classname: string): string {
   if (classname === "floorp" || classname === "firefox") {
-    return "  Browser";
+    return " Browser";
   } else if (classname.endsWith("ghostty")) {
-    return "󰊠  Ghostty";
+    return "󰊠 Ghostty";
   } else if (classname === "emacs") {
     return " Emacs";
   } else if (classname === "neovide") {

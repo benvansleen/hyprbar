@@ -24,6 +24,7 @@ let
     ++ runtimeDeps
     ++ (with pkgs; [
       libadwaita
+      nerd-fonts.victor-mono
     ]);
 in
 pkgs.stdenv.mkDerivation rec {
