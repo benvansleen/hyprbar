@@ -55,3 +55,56 @@
 
 - Use Astal libraries when available (e.g., `AstalBattery`, `AstalHyprland`) instead of shell commands
 - Match Gdk.Monitor to Hyprland monitor via `connector` property (e.g., "DP-1", "HDMI-A-1")
+- To add a new Astal library, add it to `astalPackages` in `nix/package.nix` (e.g., `wireplumber` for audio)
+- Import pattern: `import Wp from "gi://AstalWp"` then `Wp.get_default()?.audio.defaultSpeaker`
+
+### GTK4 Widget Usage
+
+- **Intrinsic elements**: AGS provides lowercase intrinsic elements for common widgets: `<box>`, `<label>`, `<button>`, `<menubutton>`, `<revealer>`, `<popover>`, `<centerbox>`, `<window>`
+- **GTK4 widgets not in AGS**: Use the class directly: `<Gtk.Scale>`, `<Gtk.Calendar>`, etc.
+- **Unknown intrinsic error**: If you see `unknown intrinsic element "foo"`, use `<Gtk.Foo>` instead
+
+### GTK4 Event Handling
+
+- **Click events**: Use `onClicked` for buttons (works on `<button>`)
+- **Hover events**: GTK4 boxes do NOT have `onHoverEnter`/`onHoverLeave` signals. Use `Gtk.EventControllerMotion`:
+  ```tsx
+  <box
+    $={(self) => {
+      const motionCtrl = new Gtk.EventControllerMotion();
+      motionCtrl.connect("enter", () => /* hover enter */);
+      motionCtrl.connect("leave", () => /* hover leave */);
+      self.add_controller(motionCtrl);
+    }}
+  >
+  ```
+- **Value change events**: For `<Gtk.Scale>`, use `onChangeValue={(self) => self.get_value()}`
+
+### GTK4 Scale Widget
+
+Scales require manual setup via the `$` callback since they don't have simple JSX props:
+
+```tsx
+<Gtk.Scale
+  $={(self) => {
+    self.set_range(0, 1); // min, max
+    self.set_draw_value(false); // hide the value label
+    self.set_value(initialValue); // set initial value
+    // To bind reactively, connect to your data source:
+    speaker.connect("notify::volume", () => self.set_value(speaker.volume));
+  }}
+  onChangeValue={(self) => {
+    speaker.volume = self.get_value();
+  }}
+/>
+```
+
+### Layout Tips
+
+- **Prevent box expansion**: Use `hexpand={false}` to stop a box from filling available horizontal space
+- **Revealer for show/hide animations**: Use `<revealer revealChild={boolean} transitionType={Gtk.RevealerTransitionType.SLIDE_RIGHT}>` for animated expand/collapse
+- **Local component state**: Use `createState()` for UI state like hover/expanded: `const [expanded, setExpanded] = createState(false)`
+
+### Nix + Git Gotcha
+
+- **New files must be git-tracked**: Nix only sees files tracked by git. If you create a new `.tsx` file and `nix build` fails with "Could not resolve", run `git add <file>` first
