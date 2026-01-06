@@ -134,6 +134,10 @@ export default function Notifications(): JSX.Element {
       if (scrollRef) {
         scrollRef.set_min_content_height(0);
       }
+      // If no notifications left, close the popover
+      if (notifd.get_notifications().length === 0) {
+        forceClose();
+      }
     }, 100);
   };
 
