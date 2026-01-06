@@ -222,7 +222,11 @@ export default function Notifications(): JSX.Element {
                   orientation={Gtk.Orientation.VERTICAL}
                   class="notifications-items"
                 >
-                  <For each={notifications}>
+                  <For
+                    each={notifications((list) =>
+                      [...list].sort((a, b) => b.time - a.time),
+                    )}
+                  >
                     {(n: Notifd.Notification) => (
                       <NotificationItem notification={n} onDismiss={keepOpen} />
                     )}
