@@ -23,6 +23,11 @@ window.Bar {
     border-radius: 8px;
     margin: 2px;
     opacity: 0.9;
+    transition: opacity 150ms ease-in-out;
+
+    &:hover {
+      opacity: 1;
+    }
   }
 
   .datetime {
@@ -63,6 +68,11 @@ window.Bar {
     margin: 2px;
     opacity: 0.9;
     padding: 0 8px;
+    transition: opacity 150ms ease-in-out;
+
+    &:hover {
+      opacity: 1;
+    }
 
     .volume-button {
       background: transparent;
@@ -111,6 +121,11 @@ window.Bar {
     margin: 2px;
     opacity: 0.9;
     padding: 0 8px;
+    transition: opacity 150ms ease-in-out;
+
+    &:hover {
+      opacity: 1;
+    }
 
     .brightness-label {
       padding: 0;
@@ -135,6 +150,11 @@ window.Bar {
     border-radius: 8px;
     margin: 2px;
     opacity: 0.9;
+    transition: opacity 150ms ease-in-out;
+
+    &:hover {
+      opacity: 1;
+    }
 
     .notifications-button {
       background: transparent;
