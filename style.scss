@@ -129,4 +129,114 @@ window.Bar {
       letter-spacing: -0.5px;
     }
   }
+
+  .notifications {
+    background-color: #{$theme_bg_color};
+    border-radius: 8px;
+    margin: 2px;
+    opacity: 0.9;
+
+    .notifications-button {
+      background: transparent;
+      border-radius: 8px;
+      margin: 0;
+      padding: 0 8px;
+      min-height: 0;
+      min-width: 0;
+    }
+
+    .notifications-popover {
+      background: transparent;
+      border: none;
+      box-shadow: none;
+
+      > contents {
+        background-color: #{$theme_bg_color};
+        border-radius: 8px;
+        border: none;
+        box-shadow: none;
+        padding: 0;
+      }
+    }
+
+    .notifications-list {
+      min-width: 320px;
+
+      .notifications-list-header {
+        padding: 8px 12px;
+
+        .notifications-title {
+          font-weight: bold;
+          font-size: 14px;
+        }
+
+        .notifications-clear {
+          background: transparent;
+          border-radius: 4px;
+          padding: 2px 8px;
+          min-height: 0;
+          min-width: 0;
+          font-size: 11px;
+          opacity: 0.7;
+
+          &:hover {
+            opacity: 1;
+          }
+        }
+      }
+
+      .notifications-items {
+        padding: 4px;
+      }
+    }
+
+    .notification-item {
+      background-color: rgba(255, 255, 255, 0.05);
+      border-radius: 6px;
+      padding: 8px;
+      margin: 4px;
+
+      .notification-header {
+        margin-bottom: 4px;
+
+        .notification-app {
+          font-size: 11px;
+          opacity: 0.7;
+        }
+
+        .notification-dismiss {
+          background: transparent;
+          border-radius: 4px;
+          padding: 0 4px;
+          min-height: 0;
+          min-width: 0;
+          opacity: 0.5;
+
+          &:hover {
+            opacity: 1;
+          }
+        }
+      }
+
+      .notification-summary {
+        font-weight: bold;
+        font-size: 13px;
+      }
+
+      .notification-body {
+        font-size: 12px;
+        opacity: 0.85;
+        margin-top: 2px;
+      }
+
+      &.critical {
+        background-color: rgba(255, 0, 0, 0.15);
+        border-left: 3px solid red;
+      }
+
+      &.low {
+        opacity: 0.7;
+      }
+    }
+  }
 }

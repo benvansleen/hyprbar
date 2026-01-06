@@ -43,8 +43,14 @@
             with pkgs;
             let
               ags-bin = lib.getExe (ags.packages.${system}.default);
+              notifdPkg = ags.packages.${system}.notifd;
+              notifdSchemaDir = "${notifdPkg}/share/gsettings-schemas/${notifdPkg.name}/glib-2.0/schemas";
+              notifdTypelibDir = "${notifdPkg}/lib/girepository-1.0";
             in
             writeShellScriptBin "watch" ''
+              export GSETTINGS_SCHEMA_DIR="${notifdSchemaDir}:''${GSETTINGS_SCHEMA_DIR:-}"
+              export GI_TYPELIB_PATH="${notifdTypelibDir}:''${GI_TYPELIB_PATH:-}"
+
               function toggle-ags() {
                 [ "$(${ags-bin} list)" ] && ${ags-bin} quit
                 ${ags-bin} run src/ &

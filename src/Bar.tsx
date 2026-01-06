@@ -11,6 +11,7 @@ import Volume from "./Volume";
 import Brightness from "./Brightness";
 import CavaVisualizer from "./Cava";
 import DateTime from "./DateTime";
+import Notifications from "./Notifications";
 
 function Left({ connector }: { connector: string }): JSX.Element {
   return <Workspaces connector={connector} />;
@@ -19,6 +20,7 @@ function Left({ connector }: { connector: string }): JSX.Element {
 function Right(): JSX.Element {
   return (
     <>
+      <Notifications />
       <CpuHistogram />
       <CpuTemperature />
       <Ram />

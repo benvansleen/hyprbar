@@ -11,6 +11,7 @@ let
     battery
     cava
     hyprland
+    notifd
     wireplumber
   ];
 
@@ -52,10 +53,16 @@ pkgs.stdenv.mkDerivation rec {
     runHook postInstall
   '';
 
-  postFixup = ''
-    wrapProgram $out/bin/${name} \
-      --prefix PATH : ${pkgs.lib.makeBinPath runtimeDeps}
-  '';
+  postFixup =
+    let
+      notifdPkg = ags.packages.${pkgs.stdenv.hostPlatform.system}.notifd;
+      notifdSchemaDir = "${notifdPkg}/share/gsettings-schemas/${notifdPkg.name}/glib-2.0/schemas";
+    in
+    ''
+      wrapProgram $out/bin/${name} \
+        --prefix PATH : ${pkgs.lib.makeBinPath runtimeDeps} \
+        --prefix GSETTINGS_SCHEMA_DIR : ${notifdSchemaDir}
+    '';
 
   meta.mainProgram = name;
 }
